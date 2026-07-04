@@ -28,6 +28,10 @@ FoodPilot shifts the cognitive load from the user to the machine. It acts as a t
 *Challenge:* Forcing users to type out "Please order option 1" or "Confirm my order" felt clunky for a concierge app. 
 *Solution:* Designed a custom Quick Reply architecture. The AI secretly injects tags like `[BUTTON: Confirm Order]` at the end of its response. The React frontend intercepts these tags, hides them from the chat text, and renders them as clickable glassmorphism buttons. Clicking them instantly triggers the next action without the user typing a word.
 
+**4. Secure Payment Handoff (API Limitations)**
+*Challenge:* For security and RBI compliance, Swiggy's API actively blocks third-party automated checkouts to prevent unauthorized UPI/Card transactions. 
+*Solution:* Designed a "Secure Hand-off Architecture". The AI autonomously handles the heavy lifting of curating items and syncing the cart to Swiggy's backend. At checkout, it gracefully catches the API restriction and directs the user to open their native Swiggy app to securely complete the final payment using biometrics, keeping their finances completely safe.
+
 ## How to Run Locally
 
 ### Prerequisites

@@ -10,6 +10,7 @@ import {
   Search,
   AlertTriangle,
   LogIn,
+  LogOut,
   SquarePen,
   Square,
 } from "lucide-react";
@@ -160,8 +161,8 @@ function FoodPilot() {
     });
   }, []);
 
-  const send = useCallback(async () => {
-    const text = input.trim();
+  const send = useCallback(async (forcedText?: string | React.MouseEvent | React.FormEvent) => {
+    const text = (typeof forcedText === "string" ? forcedText : input).trim();
     if (!text || isStreaming) return;
     setWarning(null);
     setNeedsSwiggy(false);
@@ -528,14 +529,12 @@ function Header({
         <div className="flex items-center gap-3">
           {swiggyStatus !== "unknown" && <SwiggyPill status={swiggyStatus} />}
           {user && (
-            <div className="flex items-center gap-3 ml-2 border-l border-white/10 pl-3">
-              {user.avatar_url && (
-                <img src={user.avatar_url} alt={user.name} className="h-8 w-8 rounded-full ml-1" />
-              )}
+            <div className="flex items-center ml-2 border-l border-white/10 pl-3">
               <button
                 onClick={() => setShowLogout(true)}
-                className="text-xs font-semibold text-red-400 hover:text-red-300 transition"
+                className="flex items-center gap-1.5 rounded-md px-2 py-1.5 text-xs font-medium text-muted-foreground hover:bg-white/5 hover:text-foreground transition"
               >
+                <LogOut className="h-3.5 w-3.5" />
                 Logout
               </button>
             </div>
