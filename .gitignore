@@ -1,0 +1,63 @@
+# Environments
+.env
+.env.local
+.env.*.local
+.venv
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Node/Frontend
+node_modules/
+dist/
+dist-ssr/
+.output/
+.nitro/
+.next/
+out/
+build/
+coverage/
+
+# Mac OS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+.gemini/
+
+# Logs and databases
+*.log
+*.sqlite
+*.sqlite3
+db.sqlite3
+*.db

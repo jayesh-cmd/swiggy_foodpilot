@@ -1,0 +1,24 @@
+# ── Core ─────────────────────────────────────────────────────────────────────
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+pydantic>=2.7.0
+pydantic-settings>=2.3.0
+
+# ── AI ───────────────────────────────────────────────────────────────────────
+anthropic>=0.40.0          # Claude Sonnet 4.6 + native MCP connector
+groq>=0.11.0               # Llama-3 fallback via Groq
+
+# ── Supabase / Database ───────────────────────────────────────────────────────
+supabase>=2.5.0            # Async Supabase client
+
+# ── Auth / Security ───────────────────────────────────────────────────────────
+python-jose[cryptography]>=3.3.0   # JWT verification (Supabase JWTs)
+cryptography>=42.0.0               # Token encryption (Fernet / AES-128)
+httpx>=0.27.0                      # Async HTTP for Swiggy OAuth token exchange
+sentry-sdk[fastapi]>=2.0.0         # Error tracking (optional — only active if SENTRY_DSN is set)
+
+# ── Testing ───────────────────────────────────────────────────────────────────
+pytest>=8.2.0
+pytest-asyncio>=0.23.0
+respx>=0.21.0              # HTTP mocking for Swiggy MCP calls
+pytest-cov>=5.0.0
