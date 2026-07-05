@@ -14,22 +14,26 @@ FoodPilot shifts the cognitive load from the user to the machine. It acts as a t
 - **Database & Auth:** Supabase (PostgreSQL, Google OAuth)
 - **Integration:** Swiggy MCP
 
-## Challenges & How We Solved Them
+## Challenges & How I Solved Them
 
-**1. Skyrocketing API Costs (Token Bloat)**
+**1. API Costs (Token Bloat)**
 *Challenge:* Swiggy's MCP tool definitions are massive (around 12,000 tokens). Sending this entire schema to Claude on every single chat turn was burning through API credits insanely fast.
+
 *Solution:* Implemented Anthropic's Prompt Caching in the backend. By setting `ephemeral` cache control blocks on the Swiggy schemas and system prompts, we dropped the input token cost per query by **98%**. 
 
 **2. UI Jitter During Streaming**
 *Challenge:* When streaming the LLM response directly into the UI, the text would arrive in unpredictable chunks, causing the chat bubble to stutter and jump abruptly.
+
 *Solution:* Built a custom `queue-and-drain` mechanism on the frontend. The network stream dumps chunks into a background array, and a React `useEffect` interval smoothly drains the characters onto the screen at a steady 60fps, creating a buttery-smooth native feel.
 
 **3. "No-Type" Ordering**
 *Challenge:* Forcing users to type out "Please order option 1" or "Confirm my order" felt clunky for a concierge app. 
+
 *Solution:* Designed a custom Quick Reply architecture. The AI secretly injects tags like `[BUTTON: Confirm Order]` at the end of its response. The React frontend intercepts these tags, hides them from the chat text, and renders them as clickable glassmorphism buttons. Clicking them instantly triggers the next action without the user typing a word.
 
 **4. Secure Payment Handoff (API Limitations)**
 *Challenge:* For security and RBI compliance, Swiggy's API actively blocks third-party automated checkouts to prevent unauthorized UPI/Card transactions. 
+
 *Solution:* Designed a "Secure Hand-off Architecture". The AI autonomously handles the heavy lifting of curating items and syncing the cart to Swiggy's backend. At checkout, it gracefully catches the API restriction and directs the user to open their native Swiggy app to securely complete the final payment using biometrics, keeping their finances completely safe.
 
 ## How to Run Locally
