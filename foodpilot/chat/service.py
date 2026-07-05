@@ -17,8 +17,8 @@ WHAT HAPPENS ON EVERY /chat REQUEST (in order):
 6. Build the system prompt (personalised with user's name)
 7. Call ClaudeProvider.chat(messages, system, mcp_servers)
    → Claude autonomously calls Swiggy tools (get_addresses, search_restaurants…)
-   → Chunks are yielded as SSE events to the client in real time
-   → If Claude fails → fallback to GroqProvider (no MCP tools, context-only)
+   → 401/403: Stop AI, emit special warning event so UI prompts reconnect
+   → If Claude fails → yield SSE error natively without crashing the app
 8. Accumulate the full response text
 9. Save the assistant response to the messages table
 10. Yield the final "done" SSE event with conversation_id
@@ -28,7 +28,7 @@ WHY YIELD FROM INSIDE THE SERVICE (not the router)?
 The router's job is routing. The service's job is business logic.
 Keeping the streaming generator here means the router just does:
     return StreamingResponse(service.stream(...), media_type="text/event-stream")
-The router has zero knowledge of Claude, Groq, Swiggy, or DB.
+The router has zero knowledge of Claude, Swiggy, or DB.
 
 WHY IS SWIGGY TOKEN CHECKED BEFORE STREAM STARTS?
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

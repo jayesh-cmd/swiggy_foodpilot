@@ -254,5 +254,4 @@ def _register_exception_handlers(app: FastAPI) -> None:
         )
 
 
-# Instantiate the app (imported by uvicorn as `foodpilot.main:app`)
-app = create_app()
+

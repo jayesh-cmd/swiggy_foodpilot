@@ -110,12 +110,6 @@ class ClaudeProvider:
                 },
             )
 
-            import json
-            logger.info("debug_lengths", extra={
-                "system_length_chars": len(system),
-                "mcp_servers_count": len(mcp_servers) if mcp_servers else 0,
-                "mcp_servers_json_length": len(json.dumps(mcp_servers)) if mcp_servers else 0,
-            })
 
             # Stream the response using the native MCP beta AND prompt caching
             async with self._client.beta.messages.stream(

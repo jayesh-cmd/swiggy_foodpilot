@@ -6,7 +6,6 @@ pydantic-settings>=2.3.0
 
 # ── AI ───────────────────────────────────────────────────────────────────────
 anthropic>=0.40.0          # Claude Sonnet 4.6 + native MCP connector
-groq>=0.11.0               # Llama-3 fallback via Groq
 
 # ── Supabase / Database ───────────────────────────────────────────────────────
 supabase>=2.5.0            # Async Supabase client

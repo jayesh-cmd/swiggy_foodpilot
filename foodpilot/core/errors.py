@@ -104,7 +104,7 @@ class SwiggyAuthError(FoodPilotError):
 
 
 class AIProviderError(FoodPilotError):
-    """Raised when both primary (Claude) and fallback (Groq) providers fail."""
+    """Raised when the primary AI provider fails and no fallback is available."""
 
     def __init__(self, message: str = "AI provider unavailable", provider: str = "unknown") -> None:
         super().__init__(message, "AI_PROVIDER_ERROR")

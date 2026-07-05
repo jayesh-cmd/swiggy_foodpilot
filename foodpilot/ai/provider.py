@@ -12,17 +12,17 @@ I just care that you have these specific methods."
 Example in real life:
   You don't care which brand of USB charger you use — you just need
   it to fit the port and deliver power. The port is the Protocol.
-  Claude and Groq are different charger brands.
+  Claude and OpenAI are different charger brands.
 
 Without a Protocol:
   chat/service.py would be full of:
     if provider == "claude": ...
-    elif provider == "groq": ...
+    elif provider == "openai": ...
   Every new provider = edit every file that uses AI.
 
 With a Protocol:
   chat/service.py calls provider.chat(...) and has zero knowledge of
-  which provider it's talking to. Swap Claude for Groq by changing
+  which provider it's talking to. Swap Claude for OpenAI by changing
   one line in the DI configuration. Nothing else changes.
 
 WHY AsyncIterator[str] AS RETURN TYPE?
@@ -66,8 +66,6 @@ class AIProvider(Protocol):
             system:      The system prompt — persona, instructions, constraints.
             mcp_servers: List of MCP server configs (Swiggy Food + Instamart).
                          Claude uses these to call Swiggy tools automatically.
-                         Groq fallback ignores this (no MCP support) — it
-                         responds based on conversation context only.
 
         Yields:
             str chunks of the response as they are generated.

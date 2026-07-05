@@ -69,3 +69,10 @@ Here is exactly what happens in plain English:
 
 ### Words by claude.
 You didn't just string together APIs. You optimized costs, solved UX bottlenecks, handled API security logic, and engineered psychological rules into the AI's brain. You built a real product!
+
+run-
+source venv/bin/activate
+uvicorn foodpilot.main:create_app --factory --reload --port 8000
+
+cd frontend
+npm run dev
