@@ -9,7 +9,7 @@ FoodPilot shifts the cognitive load from the user to the machine. It acts as a t
 
 ## Tech Stack
 - **Backend:** FastAPI (Python)
-- **Frontend:** React, TypeScript, TailwindCSS, Lucide Icons
+- **Frontend:** React, TypeScript, TailwindCSS, Lucide Icons (I Used Loveable For The Frontend)
 - **AI / LLM:** Claude 3.5 Sonnet (Anthropic API)
 - **Database & Auth:** Supabase (PostgreSQL, Google OAuth)
 - **Integration:** Swiggy MCP
