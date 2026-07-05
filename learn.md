@@ -46,8 +46,9 @@ Here is exactly what happens in plain English:
 
 
 ### Challenge 1: The Token Cost Explosion
-* **The Problem:** Swiggy's MCP tools are huge (around 12,000 tokens of raw text). Sending that massive instruction manual to Claude on *every single chat message* cost a fortune in API credits.
-* **Our Solution:** I implemented **Anthropic Prompt Caching**. I told the Anthropic API to cache (save) the Swiggy tools and the system prompt in memory for 5 minutes. This dropped token cost by **98%** because the AI only had to read the manual once, not every time!
+* **The Problem:** Swiggy's MCP tools are huge (around 12,000 tokens of raw text). Sending that massive instruction manual to Claude on *every single chat message* cost a fortune in API credits. Claude 3.5 Sonnet charges $3.00 per 1 Million input tokens, meaning a 20-message conversation would re-transmit 240,000 tokens just for the tool schema!
+* **Our Solution:** I implemented **Anthropic Prompt Caching**. I told the Anthropic API to cache (save) the Swiggy tools and the system prompt in memory for 5 minutes. 
+* **The Math (How we saved 90%):** Anthropic charges a 25% premium ($3.75/1M) to write to the cache on the first message, but gives a **90% discount** ($0.30/1M) for every subsequent message that reads from the cache. Over a standard 20-message session, the cost drops from ~$0.72 to ~$0.11. This reduced our API infrastructure costs on static tool schemas by exactly **90%**!
 
 ### Challenge 2: The UI Stutter (Janky Streaming)
 * **The Problem:** When streaming text directly from the AI to the screen, the text would arrive over the internet in unpredictable chunks. This caused the chat bubble to violently resize and jump around, making it look cheap.

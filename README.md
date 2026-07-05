@@ -19,7 +19,7 @@ FoodPilot shifts the cognitive load from the user to the machine. It acts as a t
 **1. API Costs (Token Bloat)**
 *Challenge:* Swiggy's MCP tool definitions are massive (around 12,000 tokens). Sending this entire schema to Claude on every single chat turn was burning through API credits insanely fast.
 
-*Solution:* Implemented Anthropic's Prompt Caching in the backend. By setting `ephemeral` cache control blocks on the Swiggy schemas and system prompts, we dropped the input token cost per query by **98%**. 
+*Solution:* Implemented Anthropic's Prompt Caching in the backend. By setting `ephemeral` cache control blocks on the Swiggy schemas and system prompts, we dropped the input token cost per query by exactly **90%** (Anthropic's maximum cache-hit discount).  
 
 **2. UI Jitter During Streaming**
 *Challenge:* When streaming the LLM response directly into the UI, the text would arrive in unpredictable chunks, causing the chat bubble to stutter and jump abruptly.
