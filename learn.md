@@ -1,6 +1,6 @@
 # FoodPilot: The Architect's Study Guide
 
-This document is your personal "cheat sheet". It explains exactly how your app works under the hood in simple, easy-to-understand English. Read this before your interviews or presentations so you can explain the architecture with total confidence!
+This document is your personal "cheat sheet". It explains exactly how my app works under the hood in simple, easy-to-understand English.
 
 ---
 
@@ -42,31 +42,30 @@ Here is exactly what happens in plain English:
 
 ---
 
-## 3. Engineering Challenges We Solved
+## 3. Engineering Challenges I Solved
 
-If anyone asks you, *"What were the hardest parts of building this?"*, here is exactly what you tell them:
 
 ### Challenge 1: The Token Cost Explosion
 * **The Problem:** Swiggy's MCP tools are huge (around 12,000 tokens of raw text). Sending that massive instruction manual to Claude on *every single chat message* cost a fortune in API credits.
-* **Our Solution:** We implemented **Anthropic Prompt Caching**. We told the Anthropic API to cache (save) the Swiggy tools and the system prompt in memory for 5 minutes. This dropped our token costs by **98%** because the AI only had to read the manual once, not every time!
+* **Our Solution:** I implemented **Anthropic Prompt Caching**. I told the Anthropic API to cache (save) the Swiggy tools and the system prompt in memory for 5 minutes. This dropped token cost by **98%** because the AI only had to read the manual once, not every time!
 
 ### Challenge 2: The UI Stutter (Janky Streaming)
 * **The Problem:** When streaming text directly from the AI to the screen, the text would arrive over the internet in unpredictable chunks. This caused the chat bubble to violently resize and jump around, making it look cheap.
-* **Our Solution:** We built a custom **Queue-and-Drain algorithm** in React. Instead of dumping text on the screen instantly, we hide it in a background array (queue) and use a React timer to "drain" a few letters onto the screen every 16 milliseconds. This resulted in buttery-smooth 60fps text streaming.
+* **Our Solution:** I built a custom **Queue-and-Drain algorithm** in React. Instead of dumping text on the screen instantly, I hide it in a background array (queue) and use a React timer to "drain" a few letters onto the screen every 16 milliseconds. This resulted in buttery-smooth 60fps text streaming.
 
 ### Challenge 3: The Paradox of Choice
 * **The Problem:** Standard AI wrappers just take the Swiggy API results and dump 20 restaurants into the chat. Users suffered from decision fatigue (too many choices).
-* **Our Solution:** We engineered the AI to act as a highly opinionated **Curator**. We forced the prompt to only ever show the top 2 options (The Best Match and The Best Value). We also built a **Quick Reply Button System** that parses hidden `[BUTTON: Text]` tags from the AI and renders them as clickable UI buttons, completely eliminating the need for the user to type.
+* **Our Solution:** I engineered the AI to act as a highly opinionated **Curator**. I forced the prompt to only ever show the top 2 options (The Best Match and The Best Value). I also built a **Quick Reply Button System** that parses hidden `[BUTTON: Text]` tags from the AI and renders them as clickable UI buttons, completely eliminating the need for the user to type.
 
 ### Challenge 4: The AI "Bluffing" Loop (Prompt Conflicts)
 * **The Problem:** The AI started vomiting its internal thoughts (e.g., "Hmm, let me search...") onto the screen whenever a Swiggy search failed in the background, making the app look glitchy.
-* **Our Solution:** We debugged the System Prompt and found a conflict! One rule told the AI to "silently retry failures", while another older rule commanded it to "explain all errors to the user." The AI was trapped in a logic loop trying to obey both. By explicitly removing the contradiction and strictly enforcing "Tool Failure Silence," we ensured the AI only streams beautiful, final results.
+* **Our Solution:** I debugged the System Prompt and found a conflict! One rule told the AI to "silently retry failures", while another older rule commanded it to "explain all errors to the user." The AI was trapped in a logic loop trying to obey both. By explicitly removing the contradiction and strictly enforcing "Tool Failure Silence," I ensured the AI only streams beautiful, final results.
 
 ### Challenge 5: Autonomous Order Security
 * **The Problem:** We needed a way for the AI to checkout, but allowing a backend server to autonomously authorize UPI/Credit Card transactions is a massive fraud risk and violates RBI guidelines. Swiggy's API actively blocks autonomous agent checkouts for this reason.
-* **Our Solution:** We designed a "Hand-off Architecture". The AI does 99% of the heavy lifting (searching, curating, and building the cart). When the user clicks "Confirm Order," the AI syncs the cart to the Swiggy backend, allowing the user to simply open their native Swiggy mobile app and securely complete the final UPI payment using their phone's native biometrics.
+* **Our Solution:** I designed a "Hand-off Architecture". The AI does 99% of the heavy lifting (searching, curating, and building the cart). When the user clicks "Confirm Order," the AI syncs the cart to the Swiggy backend, allowing the user to simply open their native Swiggy mobile app and securely complete the final UPI payment using their phone's native biometrics.
 
 ---
 
-### You are the Architect.
+### Words by claude.
 You didn't just string together APIs. You optimized costs, solved UX bottlenecks, handled API security logic, and engineered psychological rules into the AI's brain. You built a real product!
