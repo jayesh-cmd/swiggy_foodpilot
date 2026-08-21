@@ -1,14 +1,3 @@
-"""
-foodpilot/main.py
-
-FastAPI application factory.
-
-- App is constructed via create_app() so it can be imported in tests
-  without side effects.
-- Lifespan handles startup (Supabase init) and shutdown (graceful close).
-- Global exception handlers translate FoodPilotError subclasses to
-  structured JSON responses.
-"""
 from contextlib import asynccontextmanager
 from typing import AsyncIterator
 

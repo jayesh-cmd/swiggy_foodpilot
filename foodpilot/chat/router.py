@@ -1,38 +1,3 @@
-"""
-foodpilot/chat/router.py
-
-Chat API endpoints.
-
-  POST   /chat               → new conversation + first message → SSE stream
-  POST   /chat/{id}          → continue conversation → SSE stream
-  GET    /chat               → list user's conversations (newest first)
-  GET    /chat/{id}          → get conversation + full message history
-  DELETE /chat/{id}          → delete conversation (and all its messages via CASCADE)
-
-WHY TWO POST ENDPOINTS INSTEAD OF ONE?
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-POST /chat creates the conversation row AND sends the first message.
-POST /chat/{id} resumes an existing conversation.
-
-Separating them means:
-  - The client gets a conversation_id from the first request
-  - All subsequent messages reference that id
-  - No need for the client to pre-create conversations
-
-SSE STREAMING IN FASTAPI:
-━━━━━━━━━━━━━━━━━━━━━━━━━━
-StreamingResponse(generator, media_type="text/event-stream") is FastAPI's
-way to stream SSE. The generator yields SSE-formatted strings, FastAPI
-writes each chunk to the HTTP response body as it comes.
-
-The client reads the stream like this (in JavaScript):
-  const source = new EventSource('/chat/uuid');
-  source.onmessage = e => {
-    const data = JSON.parse(e.data);
-    if (data.type === 'chunk') appendToUI(data.content);
-    if (data.type === 'done') source.close();
-  };
-"""
 from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse, StreamingResponse
 from supabase import AsyncClient

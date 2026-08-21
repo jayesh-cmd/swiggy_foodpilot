@@ -1,31 +1,3 @@
-"""
-foodpilot/dependencies.py
-
-FastAPI dependency injection wiring.
-
-These functions are injected via Depends() in route handlers.
-They abstract infrastructure concerns (DB, auth) so route code only
-deals with business logic.
-
-get_database       → shared Supabase client
-get_current_user   → verified UserRow (raises 401 if unauthenticated)
-
-WHY A SEPARATE dependencies.py?
-  Route modules (auth/router.py, chat/router.py) all need the same
-  dependencies. Centralising them here avoids circular imports and
-  keeps route files focused on request/response logic only.
-
-HOW get_current_user WORKS:
-  1. Extracts the Bearer token from the Authorization header
-  2. Decodes the JWT locally using the Supabase JWT secret (no network call)
-  3. Reads the Supabase user UUID (sub claim) from the payload
-  4. Queries our `users` table to get the full UserRow
-  5. Injects the UserRow into the route handler
-
-  Any route that declares `current_user: UserRow = Depends(get_current_user)`
-  is automatically protected — no token → 401, expired token → 401, unknown
-  user → 401. The route handler never sees raw JWT claims.
-"""
 from __future__ import annotations
 
 from fastapi import Depends, Header, Cookie

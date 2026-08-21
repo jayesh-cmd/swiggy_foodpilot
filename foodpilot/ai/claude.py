@@ -1,39 +1,4 @@
-"""
-foodpilot/ai/claude.py
-
-Claude Sonnet 4.6 implementation of AIProvider.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-HOW CLAUDE CALLS SWIGGY TOOLS AUTOMATICALLY
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-This is the most important part of the whole project.
-
-When we pass `mcp_servers` to the Anthropic API with the beta flag
-"mcp-client-2025-11-20", something magical happens:
-
-1. Claude asks Swiggy's MCP server: "what tools do you have?"
-2. Swiggy responds: "I have search_restaurants, update_food_cart, place_food_order..."
-3. Claude reads the user's message ("order biryani to my home")
-4. Claude AUTONOMOUSLY decides which tools to call and in what order
-5. Claude calls get_addresses, then search_restaurants, then update_food_cart
-6. Claude reads each tool response and decides what to do next
-7. Claude writes the final natural-language response to the user
-
-WE WRITE ZERO TOOL-DISPATCH CODE. Claude does all of it.
-Our system prompt (prompt.py) just tells Claude the rules.
-
-WHY THE BETA FLAG "mcp-client-2025-11-20"?
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-The Anthropic SDK's native MCP connector is still in beta as of mid-2026.
-The flag tells the API to enable MCP server support for this request.
-This is the correct approach per Swiggy's own documentation.
-
-WHY STREAMING?
-━━━━━━━━━━━━━━━
-We use stream=True so the user sees the response token by token,
-not waiting 10 seconds for a complete response. This is the standard
-for all modern AI interfaces.
-"""
+# Brain - model & prompt caching
 from __future__ import annotations
 
 import anthropic
