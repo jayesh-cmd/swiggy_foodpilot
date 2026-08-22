@@ -58,3 +58,48 @@ You will need API keys for Anthropic and Supabase, and access to Swiggy MCP.
    npm run dev
    ```
 4. Open `localhost:5173` in your browser, log in via Google, connect your Swiggy account, and start ordering!
+
+## High-Level Design (Sequence Diagram)
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User
+    participant Frontend as React Frontend
+    participant Backend as FastAPI Backend
+    participant DB as Supabase DB
+    participant Claude as Claude 3.5 Sonnet
+    participant Swiggy as Swiggy MCP Server
+
+    User->>Frontend: Types "Order Biryani"
+    Frontend->>Backend: POST /chat (User Message)
+    
+    rect rgb(30, 30, 30)
+    Note right of Backend: 1. Setup & Context
+    Backend->>DB: Fetch & Decrypt Swiggy Token
+    DB-->>Backend: Plaintext Swiggy Token
+    Backend->>DB: Fetch Chat History
+    DB-->>Backend: Recent Messages
+    end
+
+    rect rgb(30, 30, 30)
+    Note right of Backend: 2. AI & Autonomous Tool Execution
+    Backend->>Claude: Send Prompt + History + MCP Config (w/ Token)
+    Claude->>Swiggy: Fetch MCP Tool Schema (Cached)
+    Swiggy-->>Claude: Tools (search_restaurants, update_cart, etc.)
+    
+    Claude->>Swiggy: Call get_addresses()
+    Swiggy-->>Claude: Returns Home, Work
+    Claude->>Swiggy: Call search_restaurants("Biryani", addressId)
+    Swiggy-->>Claude: Returns Paradise, Behrouz
+    Claude->>Swiggy: Call update_food_cart(...)
+    Swiggy-->>Claude: Cart updated successfully
+    end
+
+    rect rgb(30, 30, 30)
+    Note right of Claude: 3. Streaming Response
+    Claude-->>Backend: Streams conversational response
+    Backend-->>Frontend: Server-Sent Events (SSE stream)
+    Frontend-->>User: Renders text at 60fps & displays UI buttons
+    end
+```
