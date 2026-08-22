@@ -78,6 +78,7 @@ sequenceDiagram
     Note right of Backend: 1. Setup & Context
     Backend->>DB: Fetch & Decrypt Swiggy Token
     DB-->>Backend: Plaintext Swiggy Token
+    Backend->>DB: Save User Message
     Backend->>DB: Fetch Chat History
     DB-->>Backend: Recent Messages
     end
@@ -101,5 +102,6 @@ sequenceDiagram
     Claude-->>Backend: Streams conversational response
     Backend-->>Frontend: Server-Sent Events (SSE stream)
     Frontend-->>User: Renders text at 60fps & displays UI buttons
+    Backend->>DB: Save Assistant Message (Full Response)
     end
 ```
